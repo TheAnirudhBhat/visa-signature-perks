@@ -146,7 +146,7 @@
   .cat-search:focus-within { border-color: rgba(255,255,255,.2); }
   .cat-search img { box-sizing: content-box; width: 20px; height: 20px; padding: 14px; }
   .cat-search input { flex: 1; min-width: 0; height: 48px; padding: 0 16px 0 0; border: 0; outline: 0; background: none; color: #fff;
-                      font: inherit; font-size: 14px; letter-spacing: .28px; appearance: none; }
+                      font: inherit; font-size: 14px; letter-spacing: .28px; text-overflow: ellipsis; appearance: none; }
   .cat-search input::placeholder { color: rgba(255,255,255,.5); }
   .chip { display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 20px 0 16px; border: 1px solid rgba(255,255,255,.1); border-radius: 100px; font-size: 14px; line-height: 20px; letter-spacing: .28px; white-space: nowrap; }
   .chip img { width: 20px; height: 20px; }
@@ -155,15 +155,15 @@
   .is-search .cat-tools { flex: 1; }
   .is-search .cat-search { flex: 1; width: auto; }
   .og { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 32px var(--edge) 0; }
-  .og:not(.all) > :nth-child(n+13) { display: none; }
   .ot { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; height: 212px; padding: 24px; text-align: left;
         border: 1px solid rgba(255,255,255,.07); border-radius: 20px; background: linear-gradient(151.43deg, #1b1d22 0%, #101215 71.429%); transition: border-color .2s; }
-  .ot-icon { width: 52px; height: 52px; border-radius: 13px; outline: 1px solid rgba(255,255,255,.12); outline-offset: -1px; }
+  .ot-icon { display: grid; place-items: center; flex: none; overflow: hidden; width: 52px; height: 52px; border-radius: 13px; background: rgba(255,255,255,.08);
+             outline: 1px solid rgba(255,255,255,.12); outline-offset: -1px; font-weight: 500; font-size: 22px; }
   .ot-text { display: flex; flex-direction: column; gap: 12px; width: 100%; }
   .ot-offer { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; font-weight: 500; }
   .ot-sig { padding: 3px 8px; border-radius: 100px; background: rgba(162,126,255,.22); color: #d9c6ff; font-size: 10px; letter-spacing: .6px; text-transform: uppercase; }
-  .ot-brand { font-size: 11px; letter-spacing: 1.32px; text-transform: uppercase; color: rgba(255,255,255,.55); }
-  .ot-title { font-size: 18px; line-height: 24px; }
+  .ot-brand { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; letter-spacing: 1.32px; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .ot-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 18px; line-height: 24px; }
   .ot-till { font-size: 12px; color: rgba(255,255,255,.45); }
   .cat-more { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 40px var(--edge) 104px; }
   .cat-more p { font-size: 14px; color: rgba(255,255,255,.5); }
@@ -175,7 +175,7 @@
   }
   @media (max-width: 767px) {
     .cat-head { gap: 16px 12px; padding: 16px 24px 8px; border-bottom: 0; }
-    .cat-id { gap: 12px; }
+    .cat-id { flex: 1 1 0; min-width: 0; gap: 12px; }  /* long names wrap instead of dropping below Back */
     .cat-icons { width: 98px; height: 42px; }
     .cat-icons img { width: 32px; height: 32px; border-radius: 7px; }
     .cat-icons img:nth-child(1) { left: 6px; top: 8px; }
@@ -188,13 +188,12 @@
     .chip .m { display: inline; }
     /* list rows split by dividers, no card chrome */
     .og { grid-template-columns: 1fr; gap: 0; padding: 4px 24px 0; }
-    .og:not(.all) > :nth-child(n+9) { display: none; }
     .ot { flex-direction: row; justify-content: flex-start; gap: 14px; height: auto; padding: 16px 0; border: 0; border-radius: 0; background: none; }
-    .ot:not([hidden]) ~ .ot { box-shadow: inset 0 1px rgba(255,255,255,.05); }
-    .ot-icon { width: 44px; height: 44px; border-radius: 11px; }
+    .ot + .ot { box-shadow: inset 0 1px rgba(255,255,255,.05); }
+    .ot-icon { width: 44px; height: 44px; border-radius: 11px; font-size: 18px; }
     .ot-text { gap: 10px; }
     .ot-offer { gap: 4px; }
-    .ot-title { font-size: 16px; line-height: 21px; }
+    .ot-title { -webkit-line-clamp: 3; font-size: 16px; line-height: 21px; }
     .cat-more { gap: 14px; padding: 28px 24px 72px; }
     .cat-more p { font-size: 13px; }
     .more-btn { width: 100%; }
@@ -213,7 +212,13 @@
   .dlg-sheet { max-height: calc(100dvh - 112px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; padding-bottom: 8px;
                border-radius: 24px; background: var(--bg); line-height: 24px; letter-spacing: .32px; }
   .dlg-head { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 32px 24px 16px; }
-  .dlg-avatar { width: 48px; height: 48px; border-radius: 50%; outline: 1px solid rgba(255,255,255,.05); outline-offset: -1px; }
+  .dlg-avatar { display: grid; place-items: center; overflow: hidden; width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.08);
+                outline: 1px solid rgba(255,255,255,.05); outline-offset: -1px; font-weight: 500; font-size: 20px; }
+  .dlg-avatar img, .ot-icon img { width: 100%; height: 100%; object-fit: cover; }
+  /* Visa merchant logos are mostly wide 400×300 marks: contain them in an app-icon tile */
+  .mark { background: #fff; }
+  .mark img { object-fit: contain; padding: 6px; }
+  .dlg-avatar.mark img { padding: 8px; }
   .dlg-head h3 { margin: 0 0 8px; font-weight: 500; font-size: 24px; line-height: 32px; letter-spacing: .48px; }
   .dlg-head p, .dlg-row > span { margin: 0; color: rgba(255,255,255,.7); }
   .dlg-body, .dlg-steps { display: flex; flex-direction: column; gap: var(--g); }
@@ -417,27 +422,27 @@
   <section class="picks" aria-labelledby="picks-title">
     <div class="wrap"><h2 id="picks-title">Top picks</h2></div>
     <div class="carousel">
-      <button class="pick" data-offer="yatra" style="--c1:#ec3d43;--c2:#9a1218">
+      <button class="pick" data-offer="163666" style="--c1:#ec3d43;--c2:#9a1218">
         <i class="sheen"></i>
         <span class="logo-slot"><span class="logo" role="img" aria-label="Yatra" style="--w:113px;--h:50px;--logo:url(assets/logo-yatra.svg);--logo-m:url(assets/m-logo-yatra.svg)"></span></span>
         <span class="pick-text"><span class="brand">Yatra</span><span class="offer">₹1,800 off flights</span></span>
       </button>
-      <button class="pick" data-offer="district" style="--c1:#8a5af7;--c2:#3e1a9e">
+      <button class="pick" data-offer="180164" style="--c1:#8a5af7;--c2:#3e1a9e">
         <i class="sheen"></i>
         <span class="logo-slot"><span class="logo" role="img" aria-label="District" style="--w:116px;--h:48px;--logo:url(assets/logo-district.svg)"></span></span>
         <span class="pick-text"><span class="brand">District</span><span class="offer">50% off movie tickets</span></span>
       </button>
-      <button class="pick" data-offer="senco" style="--c1:#d83a44;--c2:#6e0e16">
+      <button class="pick" data-offer="161424" style="--c1:#d83a44;--c2:#6e0e16">
         <i class="sheen"></i>
         <span class="logo-slot"><span class="logo" role="img" aria-label="Senco Gold" style="--w:127px;--h:44px;--logo:url(assets/logo-senco.svg)"></span></span>
         <span class="pick-text"><span class="brand">Senco Gold</span><span class="offer">25% off making charges</span></span>
       </button>
-      <button class="pick" data-offer="timesprime" style="--c1:#8150f5;--c2:#3b138f">
+      <button class="pick" data-offer="168642" style="--c1:#8150f5;--c2:#3b138f">
         <i class="sheen"></i>
         <span class="logo-slot"><span class="logo" role="img" aria-label="Times Prime" style="--w:155px;--h:36px;--logo:url(assets/logo-timesprime.svg);--logo-m:url(assets/m-logo-timesprime.svg)"></span></span>
         <span class="pick-text"><span class="sig">Signature only</span><span class="brand">Times Prime</span><span class="offer">1 year free</span></span>
       </button>
-      <button class="pick" data-offer="airindia" style="--c1:#d6304a;--c2:#6e0a1c">
+      <button class="pick" data-offer="163790" style="--c1:#d6304a;--c2:#6e0a1c">
         <i class="sheen"></i>
         <span class="logo-slot"><span class="logo" role="img" aria-label="Air India" style="--w:154px;--h:36px;--logo:url(assets/logo-airindia.svg)"></span></span>
         <span class="pick-text"><span class="brand">Air India</span><span class="offer">₹1,000 off international flights</span></span>
@@ -554,7 +559,7 @@
   <form method="dialog"><button class="dlg-close" aria-label="Close"><img src="assets/close.svg" alt=""></button></form>
   <div class="dlg-sheet">
     <div class="dlg-head">
-      <img class="dlg-avatar" alt="">
+      <span class="dlg-avatar"></span>
       <div><h3 id="dlg-title"></h3><p class="dlg-sub"></p></div>
     </div>
     <div class="dlg-body">
@@ -574,6 +579,7 @@
   </div>
 </dialog>
 
+<script src="offers.js"></script>
 <script>
   // mobile menu
   const nav = document.querySelector('.nav');
@@ -604,51 +610,86 @@
   car.addEventListener('scrollend', recentre);
   car.addEventListener('scroll', () => { clearTimeout(settle); settle = setTimeout(recentre, 300); }, { passive: true });
 
-  // offer details. Only Yatra's content is from Figma; the rest is placeholder copy.
-  // An offer without a code shows just the Visit CTA, as the primary button.
-  const OFFERS = {
-    yatra: { brand: 'Yatra', icon: 'assets/icon-1.png', url: 'https://www.yatra.com', code: 'ATRADN',
-      title: 'Up to ₹1,800 off flights', sub: 'On domestic flights booked on Yatra', works: 'All Visa cards',
-      steps: [['plane', 'Book a domestic flight on Yatra'], ['coupon', 'Apply ATRADN at checkout'], ['card', 'Pay with your slice S card']] },
-    district: { brand: 'District', icon: 'assets/icon-13.png', url: 'https://www.district.in',
-      title: '50% off movie tickets', sub: 'On movie tickets booked on District', works: 'All Visa cards',
-      steps: [['coupon', 'Book movie tickets on District'], ['card', 'Pay with your slice S card']] },
-    senco: { brand: 'Senco Gold', icon: 'assets/icon-6.png', url: 'https://www.sencogoldanddiamonds.com',
-      title: '25% off making charges', sub: 'On gold jewellery from Senco Gold', works: 'All Visa cards',
-      steps: [['card', 'Pay with your slice S card at Senco Gold']] },
-    timesprime: { brand: 'Times Prime', icon: 'assets/icon-15.png', url: 'https://www.timesprime.com',
-      title: '1 year of Times Prime, free', sub: 'On the annual membership', works: 'Visa Signature cards',
-      steps: [['card', 'Join Times Prime with your slice S card']] },
-    airindia: { brand: 'Air India', icon: 'assets/icon-3.png', url: 'https://www.airindia.com',
-      title: '₹1,000 off international flights', sub: 'On international flights booked on Air India', works: 'All Visa cards',
-      steps: [['plane', 'Book an international flight on Air India'], ['card', 'Pay with your slice S card']] },
-  };
+  // offers: real data from offers.js (scraped Visa offers). Expired ones drop out by date.
+  const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const inr = v => v.replace(/₹\s?(\d{4,})/g, (_, n) => '₹' + Number(n).toLocaleString('en-IN'));  // ₹1800 → ₹1,800
+  const MONTHS = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
+  const fmt = iso => { const [y, m, d] = iso.split('-'); return `${+d} ${MONTHS[m - 1]} '${y.slice(2)}`; };
+  const ICONS = { 'Yatra': 1, 'EaseMyTrip': 2, 'Air India': 3, 'Lifestyle': 4, 'Titan': 5, 'Senco Gold': 6, 'Sephora': 7, 'PharmEasy': 8,
+    'MediBuddy': 9, 'Pepperfry': 10, 'FARFETCH': 11, 'Ferns and Petals': 12, 'District': 13, 'SonyLIV': 14, 'Times Prime': 15, 'KFC': 16,
+    'EatSure': 17, 'Behrouz Biryani': 18, 'Noise': 19, 'Lenovo': 20, 'Travelgoogoo': 21, 'Agoda': 22, 'Booking.com': 23, 'Trip.com': 24,
+    'Air India Express': 'airindiaexpress', 'Zetexa': 'zetexa' };
+  const POPULAR = ['Yatra', 'EaseMyTrip', 'Air India', 'District', 'Lifestyle', 'Titan', 'KFC', 'Sephora', 'SonyLIV', 'Agoda', 'Booking.com', 'Shoppers Stop'];
+  // India offers go to their category; every offer abroad goes to Abroad (matches the tile counts in Figma)
+  const CATS = { 'Travel': 'travel', 'Fashion': 'fashion', 'Health and beauty': 'health', 'Shopping': 'shopping',
+    'Entertainment': 'movies', 'Food': 'food', 'Electronics': 'electronics' };
+  const today = new Date().toISOString().slice(0, 10);
+  const ALL = DATA.filter(o => o.e >= today).map(o => ({
+    id: o.i, brand: o.m, title: inr(o.o), till: fmt(o.e), ends: o.e, code: o.c, sig: !!o.x, group: o.g,
+    where: o.h, country: o.w, cat: o.n ? CATS[o.g] : 'abroad', icon: ICONS[o.m] && `assets/icon-${ICONS[o.m]}.png`,
+    logo: o.l && `assets/logos/${o.l}`, url: o.u || `https://www.visa.co.in/en_in/visa-offers-and-perks/${o.s}/${o.i}`,
+    pop: POPULAR.indexOf(o.m) + 1 || 99,
+  }));
+  const BY_ID = Object.fromEntries(ALL.map(o => [o.id, o]));
+  const avatar = o => o.icon ? `<img${o.brand === 'Lenovo' ? ' class="lenovo"' : ''} src="${o.icon}" alt="">`
+    : o.logo ? `<img src="${o.logo}" alt="">` : esc(o.brand[0]);
+  const mark = o => !o.icon && o.logo ? ' mark' : '';
+  // App-icon look for Visa logos: fill the tile with the logo's own background (its corner colour) and crop the
+  // logo's empty margins so the mark fills the icon instead of floating small in a 400×300 frame.
+  const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
+  document.addEventListener('load', e => {
+    const img = e.target, tile = img.parentNode;
+    if (!tile?.classList?.contains('mark') || img.dataset.trimmed) return;
+    img.dataset.trimmed = 1;
+    const w = cv.width = img.naturalWidth, h = cv.height = img.naturalHeight;
+    cx.drawImage(img, 0, 0);
+    const d = cx.getImageData(0, 0, w, h).data, [r0, g0, b0, a0] = d;
+    if (a0 > 200) tile.style.background = `rgb(${r0},${g0},${b0})`;
+    let x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const ink = a0 < 128 ? d[i + 3] > 48 : Math.abs(d[i] - r0) + Math.abs(d[i + 1] - g0) + Math.abs(d[i + 2] - b0) > 48;
+      if (ink) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    const tw = x1 - x0 + 1, th = y1 - y0 + 1;
+    if (x1 < 0 || tw * th > w * h * 0.9) return;  // blank, or already edge to edge
+    cv.width = tw; cv.height = th;
+    cx.drawImage(img, x0, y0, tw, th, 0, 0, tw, th);
+    img.src = cv.toDataURL();
+  }, true);
+
+  // offer details: dialog on desktop/tablet, bottom sheet on phones. No code → Visit website is the only, primary CTA.
   const dlg = document.querySelector('.offer-dlg');
-  const $ = s => dlg.querySelector(s);
+  const $ = sel => dlg.querySelector(sel);
   let offer, copied;
   function openOffer(o) {
     offer = o;
-    const valid = offer.valid || "31 Dec '26";
-    dlg.classList.toggle('no-code', !offer.code);
-    $('.dlg-avatar').src = offer.icon;
-    $('#dlg-title').textContent = offer.title;
-    $('.dlg-sub').textContent = offer.sub;
-    $('.dlg-code b').textContent = offer.code || '';
-    $('.dlg-valid').textContent = valid;
-    $('.dlg-works').textContent = offer.works;
-    $('.dlg-steps').innerHTML = offer.steps.map(([icon, text]) => `<li><img src="assets/step-${icon}.svg" alt="">${text}</li>`).join('');
-    $('.dlg-tnc p').textContent = `Valid ${offer.sub[0].toLowerCase() + offer.sub.slice(1)} till ${valid}. Pay with your slice S card to get the discount. Visa and ${offer.brand} can change or end this offer early.`;
+    dlg.classList.toggle('no-code', !o.code);
+    $('.dlg-avatar').className = 'dlg-avatar' + mark(o);
+    $('.dlg-avatar').style.background = '';
+    $('.dlg-avatar').innerHTML = avatar(o);
+    $('#dlg-title').textContent = o.title;
+    $('.dlg-sub').textContent = [o.brand, o.where, o.country !== 'India' && o.country].filter(Boolean).join(' · ');
+    $('.dlg-code b').textContent = o.code;
+    $('.dlg-valid').textContent = o.till;
+    $('.dlg-works').textContent = o.sig ? 'Visa Signature cards' : 'All Visa cards';
+    const steps = [
+      o.group === 'Travel' && ['plane', `Book with ${o.brand}`],
+      o.code && ['coupon', `Apply ${o.code} at checkout`],
+      ['card', o.where === 'In-store' ? `Pay with your slice S card at ${o.brand}` : 'Pay with your slice S card'],
+    ].filter(Boolean);
+    $('.dlg-steps').innerHTML = steps.map(([icon, text]) => `<li><img src="assets/step-${icon}.svg" alt="">${esc(text)}</li>`).join('');
+    $('.dlg-tnc p').textContent = `Valid till ${o.till}${o.country !== 'India' ? ` in ${o.country}` : ''}. Pay with your slice S card to get the offer. `
+      + `Visa and ${o.brand} can change or end this offer early. Full terms are on the Visa offer page.`;
     $('.dlg-tnc').open = false;  // T&C start closed on every open
-    const visit = $('.dlg-visit');
-    visit.href = offer.url;
-    visit.hidden = !offer.url;
-    visit.classList.toggle('pri', !offer.code);  // the only CTA left takes the full row as primary
+    $('.dlg-visit').href = o.url;
+    $('.dlg-visit').classList.toggle('pri', !o.code);
     $('.dlg-copy').textContent = 'Copy code';
     dlg.showModal();
   }
   document.querySelector('.carousel').addEventListener('click', e => {
-    const pick = e.target.closest('[data-offer]');
-    if (pick) openOffer(OFFERS[pick.dataset.offer]);
+    const o = BY_ID[e.target.closest('[data-offer]')?.dataset.offer];
+    if (o) openOffer(o);
   });
   dlg.addEventListener('click', e => {
     if (e.target === dlg) return dlg.close();  // scrim tap
@@ -660,65 +701,39 @@
     }, () => getSelection().selectAllChildren($('.dlg-code b')));  // clipboard blocked: select it for a manual copy
   });
 
-  // category + search pages (#travel, #search). Travel tiles are Figma 81:3646; their details beyond the card are placeholder.
-  const SITES = { 'Yatra': 'https://www.yatra.com', 'EaseMyTrip': 'https://www.easemytrip.com', 'Air India': 'https://www.airindia.com',
-    'Agoda': 'https://www.agoda.com', 'Booking.com': 'https://www.booking.com', 'Air India Express': 'https://www.airindiaexpress.com',
-    'Trip.com': 'https://www.trip.com', 'Zetexa': 'https://www.zetexa.com' };
-  const TRAVEL = [
-    { brand: 'Yatra', icon: 'assets/icon-1.png', title: 'Up to ₹1,800 off domestic flights', till: "31 Dec '26", key: 'yatra' },
-    { brand: 'EaseMyTrip', icon: 'assets/icon-2.png', title: 'Up to ₹800 off domestic flights', till: "31 Dec '26" },
-    { brand: 'Air India', icon: 'assets/icon-3.png', title: 'Extra ₹1,000 off international flights', till: "31 Dec '26" },
-    { brand: 'Agoda', icon: 'assets/icon-22.png', title: 'Up to 7% off hotels worldwide', till: "31 Mar '29" },
-    { brand: 'Booking.com', icon: 'assets/icon-23.png', title: 'Up to 10% back as wallet credit', till: "25 Sep '27" },
-    { brand: 'Yatra', icon: 'assets/icon-1.png', title: 'Flat 12% off domestic hotels', till: "30 Sep '27" },
-    { brand: 'EaseMyTrip', icon: 'assets/icon-2.png', title: '₹1,000 off international flights', till: "31 Dec '26" },
-    { brand: 'Air India Express', icon: 'assets/icon-airindiaexpress.png', title: 'Up to ₹600 off per person', till: "30 Nov '26" },
-    { brand: 'Trip.com', icon: 'assets/icon-24.png', title: 'Up to 8% off hotels, 3% off flights', till: "31 Dec '27" },
-    { brand: 'EaseMyTrip', icon: 'assets/icon-2.png', title: '₹500 off hotel bookings', till: "31 Dec '26" },
-    { brand: 'Zetexa', icon: 'assets/icon-zetexa.png', title: '35% off eSIMs and SIM plans', till: "30 Nov '26" },
-    { brand: 'EaseMyTrip', icon: 'assets/icon-2.png', title: '₹120 off bus tickets', till: "31 Dec '26" },
-  ];
-  const PICKS = ['district', 'senco', 'timesprime'].map(key => ({ ...OFFERS[key], key, till: "31 Dec '26", sig: key === 'timesprime' }));
-  // Only Travel's offers are designed. Other categories reuse the offers the site already has for those brands;
-  // the rest show an empty state until their content exists.
-  const PICK = Object.fromEntries(PICKS.map(o => [o.key, o]));
-  const LISTS = {
-    travel: TRAVEL,
-    fashion: [PICK.senco],
-    movies: [PICK.district, PICK.timesprime],
-    abroad: TRAVEL.filter(o => ['Agoda', 'Booking.com', 'Trip.com', 'Zetexa'].includes(o.brand)),
-  };
-  const PAGES = { search: { list: [...TRAVEL, ...PICKS], total: 167, hint: 'Search all offers', search: true } };
+  // category pages (#travel, #fashion, …) and the search page (#search)
+  const PAGES = { search: { list: ALL, hint: 'Search all offers', search: true } };
   for (const t of document.querySelectorAll('.tile[data-cat]')) {
-    const name = t.querySelector('.tile-title').textContent, countText = t.querySelector('.tile-count').textContent;
-    PAGES[t.dataset.cat] = { name, countText, total: parseInt(countText), list: LISTS[t.dataset.cat] || [],
-      icons: t.querySelector('.icons').innerHTML, hint: `Search ${countText.replace('offers', name.toLowerCase() + ' offers')}` };
+    const name = t.querySelector('.tile-title').textContent, list = ALL.filter(o => o.cat === t.dataset.cat);
+    t.querySelector('.tile-count').textContent = `${list.length} offers`;
+    PAGES[t.dataset.cat] = { name, list, icons: t.querySelector('.icons').innerHTML, hint: `Search ${list.length} ${name.toLowerCase()} offers` };
   }
   const cat = document.querySelector('.cat'), og = cat.querySelector('.og'), q = cat.querySelector('input');
   const moreText = cat.querySelector('.cat-more p'), moreBtn = cat.querySelector('.more-btn');
-  const tile = (o, i) => `<button class="ot" data-i="${i}"><img class="ot-icon" src="${o.icon}" alt=""><span class="ot-text"><span class="ot-offer">`
+  const tile = o => `<button class="ot" data-id="${o.id}"><span class="ot-icon${mark(o)}">${avatar(o)}</span><span class="ot-text"><span class="ot-offer">`
     + (o.sig ? '<span class="ot-sig">Signature only</span>' : '')
-    + `<span class="ot-brand">${o.brand}</span><span class="ot-title">${o.title}</span></span><span class="ot-till">Till ${o.till}</span></span></button>`;
-  let page, wasPage = false, sort = 0;
+    + `<span class="ot-brand">${esc(o.brand)}</span><span class="ot-title">${esc(o.title)}</span></span><span class="ot-till">Till ${o.till}</span></span></button>`;
   // sort chip: each tap moves to the next order. Desktop shows the current one; mobile keeps the "Sort" label from Figma.
   const SORTS = ['Popular first', 'Ending soon'];
+  const ORDER = [(a, b) => a.pop - b.pop, (a, b) => a.ends.localeCompare(b.ends)];
   const chip = cat.querySelector('.chip');
-  const ends = o => { const [d, m, y] = o.till.split(' '); return (2000 + +y.slice(1)) * 1e4 + 'JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(m) / 3 * 100 + +d; };
+  const pageSize = () => matchMedia('(max-width: 767px)').matches ? 8 : 12;  // Figma: 8 rows on mobile, 12 tiles on desktop
+  let page, wasPage = false, sort = 0, limit;
+  function render() {
+    const s = q.value.trim().toLowerCase();
+    const items = page.list.filter(o => !s || `${o.brand} ${o.title} ${o.country} ${o.code}`.toLowerCase().includes(s)).sort(ORDER[sort]);
+    og.innerHTML = items.slice(0, limit).map(tile).join('');
+    moreText.textContent = !items.length ? (s ? 'No offers match your search' : 'No offers to show here yet')
+      : s ? `${items.length} offer${items.length === 1 ? '' : 's'} found` : `Showing ${Math.min(limit, items.length)} of ${items.length}`;
+    moreBtn.hidden = items.length <= limit;
+  }
   function setSort(i) {
     sort = i;
-    const by = sort ? (a, b) => ends(page.list[a.dataset.i]) - ends(page.list[b.dataset.i]) : (a, b) => a.dataset.i - b.dataset.i;
-    og.append(...[...og.children].sort(by));
     chip.querySelector('.d').textContent = SORTS[sort];
     chip.setAttribute('aria-label', `Sort: ${SORTS[sort]}`);
-    count();
+    render();
   }
   chip.addEventListener('click', () => setSort((sort + 1) % SORTS.length));
-  function count() {
-    const shown = [...og.children].filter(t => t.offsetParent).length;
-    moreText.textContent = !page.list.length ? 'No offers to show here yet'
-      : q.value.trim() ? `${shown} offer${shown === 1 ? '' : 's'} found` : `Showing ${shown} of ${page.total}`;
-    moreBtn.hidden = og.classList.contains('all') || !page.list.length;
-  }
   function route() {
     page = PAGES[location.hash.slice(1)];
     document.body.classList.toggle('is-cat', !!page);
@@ -726,13 +741,12 @@
       cat.classList.toggle('is-search', !!page.search);
       if (!page.search) {
         cat.querySelector('.cat-title h1').textContent = page.name;
-        cat.querySelector('.cat-title p').textContent = page.countText;
+        cat.querySelector('.cat-title p').textContent = `${page.list.length} offers`;
         cat.querySelector('.cat-icons').innerHTML = page.icons;
       }
-      og.classList.remove('all');
-      og.innerHTML = page.list.map(tile).join('');
       q.value = '';
-      q.placeholder = page.hint;
+      q.placeholder = !page.search && pageSize() === 8 ? `Search ${page.name.toLowerCase()}` : page.hint;  // shorter on phones
+      limit = pageSize();
       scrollTo({ top: 0, behavior: 'instant' });
       setSort(0);
       if (page.search) q.focus();
@@ -749,19 +763,11 @@
     const to = e.target.closest('[data-cat]')?.dataset.cat;
     if (to) location.hash = to;
   });
-  q.addEventListener('input', () => {
-    const s = q.value.trim().toLowerCase();
-    for (const t of og.children) t.hidden = !t.textContent.toLowerCase().includes(s);
-    if (s) og.classList.add('all');
-    count();
-  });
-  moreBtn.addEventListener('click', () => { og.classList.add('all'); count(); });
+  q.addEventListener('input', () => { limit = pageSize(); render(); });
+  moreBtn.addEventListener('click', () => { limit += pageSize() * 2; render(); });
   og.addEventListener('click', e => {
-    const t = e.target.closest('.ot');
-    if (!t) return;
-    const o = page.list[t.dataset.i];
-    openOffer(o.key ? OFFERS[o.key] : { brand: o.brand, icon: o.icon, url: SITES[o.brand], title: o.title, sub: `On ${o.brand}`,
-      works: 'All Visa cards', valid: o.till, steps: [['card', 'Pay with your slice S card']] });
+    const o = BY_ID[e.target.closest('.ot')?.dataset.id];
+    if (o) openOffer(o);
   });
 </script>
 <script type="module">
